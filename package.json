@@ -1,0 +1,45 @@
+{
+  "name": "ts-compiler",
+  "version": "0.1.0",
+  "description": "TypeScript compilation via the typescript-api",
+  "main": "ts-compiler.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jedmao/ts-compiler.git"
+  },
+  "keywords": [
+    "typescript",
+    "compiler",
+    "language",
+    "microsoft"
+  ],
+  "author": "Jed Mao <jed.hunsaker+npm@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jedmao/ts-compiler/issues"
+  },
+  "homepage": "https://github.com/jedmao/ts-compiler",
+  "dependencies": {
+    "promise-ts": "~0.1.0",
+    "simple-glob": "~0.1.0",
+    "typescript": "~0.9.5",
+    "typescript-api": "~0.9.5"
+  },
+  "devDependencies": {
+    "chai": "~1.8.1",
+    "grunt": "~0.4.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-mocha-test": "~0.8.1",
+    "grunt-typescript": "~0.2.7",
+    "mocha": "~1.17.0",
+    "sinon": "~1.7.3",
+    "sinon-chai": "~2.4.0"
+  },
+  "engines": {
+    "node": ">=0.10.24"
+  }
+}

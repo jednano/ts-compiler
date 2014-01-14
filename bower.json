@@ -1,0 +1,32 @@
+{
+  "name": "ts-compiler",
+  "version": "0.9.5",
+  "homepage": "https://github.com/jedmao/ts-compiler",
+  "authors": [
+    "Jed Mao <jed.hunsaker+npm@gmail.com>"
+  ],
+  "description": "TypeScript compilation via the typescript-api",
+  "main": "ts-compiler.js",
+  "keywords": [
+    "typescript",
+    "compiler",
+    "language",
+    "microsoft"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "dt-node": "https://github.com/jedmao/dt-node.git"
+  },
+  "devDependencies": {
+    "dt-mocha": "~1.9.0",
+    "dt-sinon": "~1.5.0",
+    "dt-sinon-chai": "~2.4.0"
+  }
+}
