@@ -1,7 +1,6 @@
 ﻿/// <reference path="node_modules/typescript-api/typescript-api.d.ts" />
 import ts = require('typescript-api');
 import path = require('path');
-var glob = require('simple-glob');
 import events = require('events');
 
 
@@ -116,7 +115,7 @@ export class BatchCompiler extends events.EventEmitter {
 		};
 	}
 
-	compile(globs: string[], options?: any, callback?: Function) {
+	compile(files: string[], options?: any, callback?: Function) {
 		handleOverloads.call(this);
 		handleSkipWrite.call(this);
 		setupArguments(args => {
@@ -141,7 +140,7 @@ export class BatchCompiler extends events.EventEmitter {
 
 		function setupArguments(cb: Function) {
 			var args = argify(options);
-			args.push.apply(args, glob(globs));
+			args.push.apply(args, files);
 			cb(args);
 		}
 	}

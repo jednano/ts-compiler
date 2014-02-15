@@ -54,11 +54,10 @@ ts.compile(
 ## Module API
 
 
-### ts.compile(globs: string[], options?: ICompilerOptions, callback?: Function)
+### ts.compile(files: string[], options?: ICompilerOptions, callback?: Function)
 
 - This is a shorthand way to call `new ts.BatchCompiler.compile(...)`
 - Callback signature is err: Error, results: [ts.OutputFile](#tsoutputfile) Array.
-- The globs array also supports grunt-like glob syntax, as defined in [simple-glob][].
 - The options follow the [ICompilerOptions interface](#tsicompileroptions).
 
 
@@ -162,4 +161,3 @@ Released under the MIT license.
 [NPM version]: https://badge.fury.io/js/ts-compiler.png
 [Views]: https://sourcegraph.com/api/repos/github.com/jedmao/ts-compiler/counters/views-24h.png
 [NPM]: https://nodei.co/npm/ts-compiler.png?downloads=true
-[simple-glob]: https://github.com/jedmao/simple-glob

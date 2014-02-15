@@ -71,17 +71,6 @@ describe('BatchCompiler', () => {
 			done();
 		});
 	});
-
-	it('supports glob syntax', done => {
-		ts.compile(
-		['test/fixtures/*.ts', '!test/fixtures/bad.ts'],
-		{ skipWrite: true },
-		(err: Error, results: ts.OutputFile[]) => {
-			expect(err).to.be.null;
-			expect(results.length).to.equal(4);
-			done();
-		});
-	});
 });
 
 function stripNewlines(text) {
