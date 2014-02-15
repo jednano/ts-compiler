@@ -18,13 +18,16 @@ This version is compatable with TypeScript 0.9.5.
 /// <reference path="node_modules/ts-compiler/ts-compiler.d.ts" />
 import ts = require('ts-compiler');
 
-ts.compile(['foo.ts', 'bar.ts'], { skipWrite: true }, (results: ts.OutputFile[]) => {
+ts.compile(
+  ['foo.ts', 'bar.ts'],
+  { skipWrite: true },
+  (err: Error, results: ts.OutputFile[]) => {
 
-      var foo = results[0];
-      console.log(foo.text);
+    var foo = results[0];
+    console.log(foo.text);
 
-      var bar = results[1];
-      console.log(bar.text);
+    var bar = results[1];
+    console.log(bar.text);
   });
 ```
 
@@ -34,24 +37,27 @@ ts.compile(['foo.ts', 'bar.ts'], { skipWrite: true }, (results: ts.OutputFile[])
 ```js
 var ts = require('ts-compiler');
 
-ts.compile(['foo.ts', 'bar.ts'], { skipWrite: true }, function(results) {
+ts.compile(
+  ['foo.ts', 'bar.ts'],
+  { skipWrite: true },
+  function(err, results) {
 
-      var foo = results[0];
-      console.log(foo.text);
+    var foo = results[0];
+    console.log(foo.text);
 
-      var bar = results[1];
-      console.log(bar.text);
-  });
+    var bar = results[1];
+    console.log(bar.text);
+});
 ```
 
 
 ## Module API
 
 
-### ts.compile(globs: string[], options?: ICompilerOptions, callback: Function)
+### ts.compile(globs: string[], options?: ICompilerOptions, callback?: Function)
 
-- This is a shorthand way to call `new ts.BatchCompiler.compileFiles(...)`
-- Returns a promise, resolving with a [ts.OutputFile](#tsoutputfile) Array.
+- This is a shorthand way to call `new ts.BatchCompiler.compile(...)`
+- Callback signature is err: Error, results: [ts.OutputFile](#tsoutputfile) Array.
 - The globs array also supports grunt-like glob syntax, as defined in [simple-glob][].
 - The options follow the [ICompilerOptions interface](#tsicompileroptions).
 

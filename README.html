@@ -1,0 +1,197 @@
+<h1>ts-compiler</h1>
+
+<blockquote>
+  <p>TypeScript compilation via the <a href="https://github.com/jedmao/typescript-api">typescript-api</a>.</p>
+</blockquote>
+
+<p>This version is compatable with TypeScript 0.9.5.</p>
+
+<p><a href="http://travis-ci.org/jedmao/ts-compiler"><img src="https://secure.travis-ci.org/jedmao/ts-compiler.png?branch=master" alt="Build Status" /></a><br />
+<a href="https://gemnasium.com/jedmao/ts-compiler"><img src="https://gemnasium.com/jedmao/ts-compiler.png" alt="Dependency Status" /></a><br />
+<a href="http://badge.fury.io/js/ts-compiler"><img src="https://badge.fury.io/js/ts-compiler.png" alt="NPM version" /></a><br />
+<a href="https://sourcegraph.com/github.com/jedmao/ts-compiler"><img src="https://sourcegraph.com/api/repos/github.com/jedmao/ts-compiler/counters/views-24h.png" alt="Views" /></a></p>
+
+<p><a href="https://nodei.co/npm/ts-compiler/"><img src="https://nodei.co/npm/ts-compiler.png?downloads=true" alt="NPM" /></a></p>
+
+<h2>TypeScript Usage</h2>
+
+<p>```ts<br />
+/// <reference path="node_modules/ts-compiler/ts-compiler.d.ts" /><br />
+import ts = require('ts-compiler');</p>
+
+<p>ts.compile(<br />
+  ['foo.ts', 'bar.ts'],<br />
+  { skipWrite: true },<br />
+  (err: Error, results: ts.OutputFile[]) => {</p>
+
+<pre><code>var foo = results[0];
+console.log(foo.text);
+
+var bar = results[1];
+console.log(bar.text);
+</code></pre>
+
+<p>});<br />
+```</p>
+
+<h2>JavaScript Usage</h2>
+
+<p>```js<br />
+var ts = require('ts-compiler');</p>
+
+<p>ts.compile(<br />
+  ['foo.ts', 'bar.ts'],<br />
+  { skipWrite: true },<br />
+  function(err, results) {</p>
+
+<pre><code>var foo = results[0];
+console.log(foo.text);
+
+var bar = results[1];
+console.log(bar.text);
+</code></pre>
+
+<p>});<br />
+```</p>
+
+<h2>Module API</h2>
+
+<h3>ts.compile(globs: string[], options?: ICompilerOptions, callback?: Function)</h3>
+
+<ul>
+<li>This is a shorthand way to call <code>new ts.BatchCompiler.compile(...)</code></li>
+<li>Callback signature is err: Error, results: <a href="#tsoutputfile">ts.OutputFile</a> Array.</li>
+<li>The globs array also supports grunt-like glob syntax, as defined in <a href="https://github.com/jedmao/simple-glob">simple-glob</a>.</li>
+<li>The options follow the <a href="#tsicompileroptions">ICompilerOptions interface</a>.</li>
+</ul>
+
+<h3>ts.OutputFile</h3>
+
+<ul>
+<li>name: string</li>
+<li>writeByteOrderMark: boolean</li>
+<li>text: string</li>
+<li>fileType: (0: JavaScript, 1: SourceMap, 2: Declaration)</li>
+<li>sourceMapEntries: SourceMapEntry[]</li>
+</ul>
+
+<h3>ts.ICompilerOptions</h3>
+
+<p>Though all natively supported TypeScript compiler options will be passed through to the real compiler, it might not always make sense from an API standpoint. Use with common sense.</p>
+
+<h4>options.declaration</h4>
+
+<ul>
+<li>Type: <code>Boolean</code></li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p>Generates corresponding .d.ts file.</p>
+
+<h4>options.mapRoot</h4>
+
+<ul>
+<li>Type: <code>String</code></li>
+</ul>
+
+<p>Specifies the location where debugger should locate map files instead of generated locations.</p>
+
+<h4>options.module</h4>
+
+<ul>
+<li>Type: <code>String</code></li>
+</ul>
+
+<p>Specify module code generation: <code>commonjs</code> or <code>amd</code></p>
+
+<h4>options.noImplicitAny</h4>
+
+<ul>
+<li>Type: <code>Boolean</code></li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p>Warn on expressions and declarations with an implied <code>any</code> type.</p>
+
+<h4>options.noResolve</h4>
+
+<ul>
+<li>Type: <code>Boolean</code></li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p>Skip resolution and preprocessing.</p>
+
+<h4>options.out</h4>
+
+<ul>
+<li>Type: <code>String</code></li>
+</ul>
+
+<p>Concatenate and emit output to single file.</p>
+
+<h4>options.outDir</h4>
+
+<ul>
+<li>Type: <code>String</code></li>
+</ul>
+
+<p>Redirect output structure to the directory.</p>
+
+<h4>options.removeComments</h4>
+
+<ul>
+<li>Type: <code>Boolean</code></li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p>Do not emit comments to output.</p>
+
+<h4>options.sourcemap</h4>
+
+<ul>
+<li>Type: <code>Boolean</code></li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p>Generates corresponding .map file.</p>
+
+<h4>options.sourceRoot</h4>
+
+<ul>
+<li>Type: <code>String</code></li>
+</ul>
+
+<p>Specifies the location where debugger should locate TypeScript files instead of source locations.</p>
+
+<h4>options.target</h4>
+
+<ul>
+<li>Type: <code>String</code></li>
+<li>Default: <code>ES3</code></li>
+</ul>
+
+<p>Specify ECMAScript target version: 'ES3' or 'ES5'</p>
+
+<h4>options.optionsFile</h4>
+
+<ul>
+<li>Type: <code>String</code></li>
+</ul>
+
+<p>Insert command line options and files from a file. This is natively supported by the tsc command, but as a different @file key.</p>
+
+<h4>skipWrite</h4>
+
+<ul>
+<li>Type: <code>Boolean</code></li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p>Skips writing the output files. This flag is unique to ts-compiler.</p>
+
+<h2>License</h2>
+
+<p>Released under the MIT license.</p>
+
+<p><a href="https://bitdeli.com/free" title="Bitdeli Badge"><img src="https://d2weczhvl823v0.cloudfront.net/jedmao/ts-compiler/trend.png" alt="Bitdeli Badge" /></a></p>
