@@ -23,7 +23,7 @@ describe('BatchCompiler', () => {
 	});
 
 	it('writes result to a destination file', function(done) {
-		this.timeout(3000);
+		this.timeout(5000);
 		expect(fs.existsSync('test/fixtures/foo.js')).to.be.false;
 		ts.compile(
 			['test/fixtures/foo.ts'],
