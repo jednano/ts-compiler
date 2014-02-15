@@ -18,15 +18,14 @@ This version is compatable with TypeScript 0.9.5.
 /// <reference path="node_modules/ts-compiler/ts-compiler.d.ts" />
 import ts = require('ts-compiler');
 
-ts.compile(['foo.ts', 'bar.ts'], { skipWrite: true })
-    .done((results: ts.OutputFile[]) => {
+ts.compile(['foo.ts', 'bar.ts'], { skipWrite: true }, (results: ts.OutputFile[]) => {
 
-        var foo = results[0];
-        console.log(foo.text);
+      var foo = results[0];
+      console.log(foo.text);
 
-        var bar = results[1];
-        console.log(bar.text);
-    });
+      var bar = results[1];
+      console.log(bar.text);
+  });
 ```
 
 
@@ -35,22 +34,21 @@ ts.compile(['foo.ts', 'bar.ts'], { skipWrite: true })
 ```js
 var ts = require('ts-compiler');
 
-ts.compile(['foo.ts', 'bar.ts'], { skipWrite: true })
-    .done(function(results) {
+ts.compile(['foo.ts', 'bar.ts'], { skipWrite: true }, function(results) {
 
-        var foo = results[0];
-        console.log(foo.text);
+      var foo = results[0];
+      console.log(foo.text);
 
-        var bar = results[1];
-        console.log(bar.text);
-    });
+      var bar = results[1];
+      console.log(bar.text);
+  });
 ```
 
 
 ## Module API
 
 
-### ts.compile(globs: string[], options?: ICompilerOptions): P.Promise
+### ts.compile(globs: string[], options?: ICompilerOptions, callback: Function)
 
 - This is a shorthand way to call `new ts.BatchCompiler.compileFiles(...)`
 - Returns a promise, resolving with a [ts.OutputFile](#tsoutputfile) Array.

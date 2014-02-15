@@ -1,8 +1,8 @@
 {
   "name": "ts-compiler",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "TypeScript compilation via the typescript-api",
-  "main": "ts-compiler.js",
+  "main": "tsc.js",
   "scripts": {
     "test": "grunt test"
   },
@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/jedmao/ts-compiler",
   "dependencies": {
-    "promise-ts": "~0.1.0",
     "simple-glob": "~0.1.0",
     "typescript": "~0.9.5",
     "typescript-api": "~0.9.5"

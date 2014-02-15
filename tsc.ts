@@ -1,15 +1,12 @@
 ﻿/// <reference path="node_modules/typescript-api/typescript-api.d.ts" />
-/// <reference path="node_modules/promise-ts/promise.d.ts" />
 import ts = require('typescript-api');
-import P = require('promise-ts');
-var Deferred = P.Deferred;
 import path = require('path');
 var glob = require('simple-glob');
 import events = require('events');
 
 
-export function compile(files: string[], options?: ICompilerOptions): P.Promise {
-	return new BatchCompiler().compile(files, options);
+export function compile(files: string[], options?: any, callback?: Function) {
+	return new BatchCompiler().compile(files, options, callback);
 }
 
 export interface ICompilerOptions {
@@ -119,16 +116,22 @@ export class BatchCompiler extends events.EventEmitter {
 		};
 	}
 
-	compile(globs: string[], options?: ICompilerOptions): P.Promise {
-		var compiling = new Deferred();
+	compile(globs: string[], options?: any, callback?: Function) {
+		handleOverloads.call(this);
 		handleSkipWrite.call(this);
-		setupArguments().done(args => {
+		setupArguments(args => {
 			ts.IO.arguments = args;
-			this._batchCompile().done(results => {
-				compiling.resolve(results);
-			});
+			this._batchCompile(callback);
 		});
-		return compiling.promise;
+
+		function handleOverloads() {
+			if (typeof options === 'function') {
+				callback = options;
+				options = {};
+			} else if (typeof callback !== 'function') {
+				callback = () => {};
+			}
+		}
 
 		function handleSkipWrite() {
 			options = options || {};
@@ -136,76 +139,59 @@ export class BatchCompiler extends events.EventEmitter {
 			delete options.skipWrite;
 		}
 
-		function setupArguments(): P.Promise {
-			var unglobbing = new Deferred();
-			setTimeout(() => {
-				var args = argify(options);
-				args.push.apply(args, glob(globs));
-				unglobbing.resolve(args);
-			});
-			return unglobbing.promise;
+		function setupArguments(cb: Function) {
+			var args = argify(options);
+			args.push.apply(args, glob(globs));
+			cb(args);
 		}
 	}
 
-	private _batchCompile(): P.Promise {
-		var compiling = new Deferred();
-		setTimeout(function () {
+	private _batchCompile(callback: Function) {
+		var compiler = <any>this._compiler;
 
-			var compiler = this._compiler;
+		ts.CompilerDiagnostics.diagnosticWriter = { Alert: (s: string) => { compiler.ioHost.printLine(s); } };
 
-			ts.CompilerDiagnostics.diagnosticWriter = { Alert: (s: string) => { compiler.ioHost.printLine(s); } };
+		if (compiler.parseOptions()) {
+			compiler.logger = compiler.compilationSettings.gatherDiagnostics() ? new DiagnosticsLogger((<any>this).ioHost) : new ts.NullLogger();
 
-			if (compiler.parseOptions()) {
-				compiler.logger = compiler.compilationSettings.gatherDiagnostics() ? new DiagnosticsLogger(this.ioHost) : new ts.NullLogger();
-
-				if (compiler.compilationSettings.watch()) {
-					// Watch will cause the program to stick around as long as the files exist
-					compiler.watchFiles();
-					compiling.resolve();
-					return;
-				}
-
-				compiler.resolve();
-				this._compile().then(callbacks => {
-					compiling.resolve(callbacks);
-				}, () => {
-					compiling.reject();
-				});
-			} else {
-				compiling.reject();
+			if (compiler.compilationSettings.watch()) {
+				// Watch will cause the program to stick around as long as the files exist
+				compiler.watchFiles();
+				callback(null);
+				return;
 			}
 
-			if (compiler.hasErrors) {
-				compiling.reject(1);
-			}
-		}.bind(this));
-		return compiling.promise;
+			compiler.resolve();
+			this._compile(callback);
+		} else {
+			callback(new Error('Error parsing compiler options'));
+		}
+
+		if (compiler.hasErrors) {
+			callback(new Error('Unspecified error'));
+		}
 	}
 
-	private _compile(): P.Promise {
-		var compiling = new Deferred();
-		setTimeout(function () {
-			var compiler = this._compiler;
-			var tsCompiler = new ts.TypeScriptCompiler(compiler.logger, compiler.compilationSettings);
+	private _compile(callback: Function) {
+		var compiler = <any>this._compiler;
+		var tsCompiler = new ts.TypeScriptCompiler(compiler.logger, compiler.compilationSettings);
 
-			compiler.resolvedFiles.forEach(resolvedFile => {
-				var sourceFile = compiler.getSourceFile(resolvedFile.path);
-				tsCompiler.addFile(resolvedFile.path, sourceFile.scriptSnapshot, sourceFile.byteOrderMark, /*version:*/ 0, /*isOpen:*/ false, resolvedFile.referencedFiles);
-			});
+		compiler.resolvedFiles.forEach(resolvedFile => {
+			var sourceFile = compiler.getSourceFile(resolvedFile.path);
+			tsCompiler.addFile(resolvedFile.path, sourceFile.scriptSnapshot, sourceFile.byteOrderMark, /*version:*/ 0, /*isOpen:*/ false, resolvedFile.referencedFiles);
+		});
+		
+		var results: ts.OutputFile[] = [];
+		for (var it = tsCompiler.compile((path: string) => compiler.resolvePath(path)); it.moveNext();) {
+			var result = it.current();
 
-			var results: ts.OutputFile[] = [];
-			for (var it = tsCompiler.compile((path: string) => compiler.resolvePath(path)); it.moveNext();) {
-				var result = it.current();
-
-				result.diagnostics.forEach(d => compiler.addDiagnostic(d));
-				if (!this._skipWrite && !compiler.tryWriteOutputFiles(result.outputFiles)) {
-					compiling.reject();
-				}
-				Array.prototype.push.apply(results, result.outputFiles);
+			result.diagnostics.forEach(d => compiler.addDiagnostic(d));
+			if (!this._skipWrite && !compiler.tryWriteOutputFiles(result.outputFiles)) {
+				callback(new Error('Error writing to output file'));
 			}
-			compiling.resolve(results);
-		}.bind(this));
-		return compiling.promise;
+			Array.prototype.push.apply(results, result.outputFiles);
+		}
+		callback(null, results);
 	}
 }
 

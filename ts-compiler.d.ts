@@ -1,12 +1,12 @@
 ﻿/// <reference path="node_modules/typescript-api/typescript-api.d.ts" />
-/// <reference path="node_modules/promise-ts/promise.d.ts" />
+
 
 declare module "ts-compiler" {
 	import ts = require('typescript-api');
-	import P = require('promise-ts');
-
-	export function compile(files: string[], options?: ICompilerOptions): P.Promise;
-
+	import events = require('events');
+	
+	export function compile(files: string[], callback?: Function): void;
+	export function compile(files: string[], options?: any, callback?: Function): void;
 	export interface ICompilerOptions {
 		declaration?: boolean;
 		help?: boolean;
@@ -25,27 +25,16 @@ declare module "ts-compiler" {
 		optionsFile?: string;
 		skipWrite?: boolean;
 	}
-
-	export class BatchCompiler extends ts.BatchCompiler {
+	export class BatchCompiler extends events.EventEmitter {
 		private _skipWrite;
+		private _compiler;
 		constructor();
-		public compileFiles(globs: string[], options?: ICompilerOptions): P.Promise;
-		private _batchCompile();
-		private _compile();
+		private redirectErrors();
+		public compile(globs: string[], callback?: Function): void;
+		public compile(globs: string[], options?: any, callback?: Function): void;
+		private _batchCompile(callback);
+		private _compile(callback);
 	}
-
-	export function argify(options: ICompilerOptions): string[];
-
-	export class Logger implements ts.ILogger {
-		public information(): boolean;
-		public debug(): boolean;
-		public warning(): boolean;
-		public error(): boolean;
-		public fatal(): boolean;
-		public log(s: string): void;
-	}
-
 	export class OutputFile extends ts.OutputFile {
 	}
-
 }

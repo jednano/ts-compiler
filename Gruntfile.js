@@ -12,7 +12,7 @@
 				options: {
 					declaration: true
 				},
-				src: ['ts-compiler.ts'],
+				src: ['tsc.ts'],
 				dest: ''
 			},
 			test: {
@@ -26,7 +26,7 @@
 					reporter: 'spec',
 					clearRequireCache: true
 				},
-				src: ['test/ts-compiler.js']
+				src: ['test/tsc.js']
 			}
 		},
 		watch: {
@@ -44,6 +44,6 @@
 
 	grunt.registerTask('default', ['test', 'watch']);
 	grunt.registerTask('test', ['build', 'mochaTest', 'clean']);
-	grunt.registerTask('build', ['clean', 'typescript']);
+	grunt.registerTask('build', ['clean', 'typescript:test']);
 
 };
