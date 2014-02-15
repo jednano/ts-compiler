@@ -6,7 +6,6 @@
 };
 var ts = require('typescript-api');
 
-var glob = require('simple-glob');
 var events = require('events');
 
 function compile(files, options, callback) {
@@ -50,7 +49,7 @@ var BatchCompiler = (function (_super) {
         };
     };
 
-    BatchCompiler.prototype.compile = function (globs, options, callback) {
+    BatchCompiler.prototype.compile = function (files, options, callback) {
         var _this = this;
         handleOverloads.call(this);
         handleSkipWrite.call(this);
@@ -77,7 +76,7 @@ var BatchCompiler = (function (_super) {
 
         function setupArguments(cb) {
             var args = argify(options);
-            args.push.apply(args, glob(globs));
+            args.push.apply(args, files);
             cb(args);
         }
     };
