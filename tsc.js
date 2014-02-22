@@ -53,11 +53,11 @@ var BatchCompiler = (function (_super) {
         var _this = this;
         handleOverloads.call(this);
         handleSkipWrite.call(this);
+        this.on('error', callback);
         setupArguments(function (args) {
             ts.IO.arguments = args;
             _this._batchCompile(callback);
         });
-        this.on('error', callback);
         return this;
 
         function handleOverloads() {
