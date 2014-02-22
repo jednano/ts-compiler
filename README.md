@@ -54,11 +54,12 @@ ts.compile(
 ## Module API
 
 
-### ts.compile(files: string[], options?: ICompilerOptions, callback?: Function)
+### ts.compile(files: string[], options?: ICompilerOptions, callback?: Function): BatchCompiler
 
 - This is a shorthand way to call `new ts.BatchCompiler.compile(...)`
 - Callback signature is err: Error, results: [ts.OutputFile](#tsoutputfile) Array.
 - The options follow the [ICompilerOptions interface](#tsicompileroptions).
+- Emits `error` and `info` events.
 
 
 ### ts.OutputFile

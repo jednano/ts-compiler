@@ -30,8 +30,8 @@ declare module "ts-compiler" {
 		private _compiler;
 		constructor();
 		private redirectErrors();
-		public compile(files: string[], callback?: Function): void;
-		public compile(files: string[], options?: any, callback?: Function): void;
+		public compile(files: string[], callback?: Function): BatchCompiler;
+		public compile(files: string[], options?: any, callback?: Function): BatchCompiler;
 		private _batchCompile(callback);
 		private _compile(callback);
 	}

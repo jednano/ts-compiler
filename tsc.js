@@ -57,6 +57,8 @@ var BatchCompiler = (function (_super) {
             ts.IO.arguments = args;
             _this._batchCompile(callback);
         });
+        this.on('error', callback);
+        return this;
 
         function handleOverloads() {
             if (typeof options === 'function') {

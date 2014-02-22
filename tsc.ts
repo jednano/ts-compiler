@@ -115,13 +115,15 @@ export class BatchCompiler extends events.EventEmitter {
 		};
 	}
 
-	compile(files: string[], options?: any, callback?: Function) {
+	compile(files: string[], options?: any, callback?: Function): BatchCompiler {
 		handleOverloads.call(this);
 		handleSkipWrite.call(this);
 		setupArguments(args => {
 			ts.IO.arguments = args;
 			this._batchCompile(callback);
 		});
+		this.on('error', callback);
+		return this;
 
 		function handleOverloads() {
 			if (typeof options === 'function') {
