@@ -1,6 +1,6 @@
 {
   "name": "ts-compiler",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "TypeScript compilation via the typescript-api",
   "main": "tsc.js",
   "scripts": {
@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/jedmao/ts-compiler",
   "dependencies": {
-    "typescript": "~0.9.5",
-    "typescript-api": "~0.9.5"
+    "typescript": "~0.9.7",
+    "typescript-api": "~0.9.7"
   },
   "devDependencies": {
     "chai": "~1.9.0",
