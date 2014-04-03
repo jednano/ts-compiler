@@ -1,6 +1,6 @@
 {
   "name": "ts-compiler",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "homepage": "https://github.com/jedmao/ts-compiler",
   "authors": [
     "Jed Mao <jed.hunsaker+npm@gmail.com>"

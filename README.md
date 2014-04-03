@@ -2,7 +2,7 @@
 
 > TypeScript compilation via the [typescript-api][].
 
-This version is compatable with TypeScript 0.9.7.
+This version is compatable with TypeScript 1.0.
 
 [![Build Status][]](http://travis-ci.org/jedmao/ts-compiler)
 [![Dependency Status][]](https://gemnasium.com/jedmao/ts-compiler)
