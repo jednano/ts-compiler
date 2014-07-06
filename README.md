@@ -157,8 +157,8 @@ Released under the MIT license.
 
 
 [typescript-api]: https://github.com/jedmao/typescript-api
-[Build Status]: https://secure.travis-ci.org/jedmao/ts-compiler.png?branch=master
-[Dependency Status]: https://gemnasium.com/jedmao/ts-compiler.png
-[NPM version]: https://badge.fury.io/js/ts-compiler.png
+[Build Status]: https://secure.travis-ci.org/jedmao/ts-compiler.svg?branch=master
+[Dependency Status]: https://gemnasium.com/jedmao/ts-compiler.svg
+[NPM version]: https://badge.fury.io/js/ts-compiler.svg
 [Views]: https://sourcegraph.com/api/repos/github.com/jedmao/ts-compiler/counters/views-24h.png
 [NPM]: https://nodei.co/npm/ts-compiler.png?downloads=true
